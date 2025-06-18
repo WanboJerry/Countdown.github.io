@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>我的在线计时器</title>
+    <style>
+        body { font-family: Arial; text-align: center; }
+        #timer { font-size: 3em; margin: 20px; }
+    </style>
+</head>
+<body>
+    <h1>在线计时器</h1>
+    <div id="timer">00:00:00</div>
+    <button onclick="startTimer()">开始</button>
+    <button onclick="stopTimer()">停止</button>
+    <button onclick="resetTimer()">重置</button>
+
+    <script>
+        let seconds = 0;
+        let timer;
+        
+        function startTimer() {
+            timer = setInterval(() => {
+                seconds++;
+                updateDisplay();
+            }, 1000);
+        }
+        
+        function stopTimer() {
+            clearInterval(timer);
+        }
+        
+        function resetTimer() {
+            stopTimer();
+            seconds = 0;
+            updateDisplay();
+        }
+        
+        function updateDisplay() {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            
+            document.getElementById('timer').innerHTML = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+    </script>
+</body>
+</html>
