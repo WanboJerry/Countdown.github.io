@@ -1,48 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>我的在线计时器</title>
+    <title>倒计时</title>
     <style>
         body { font-family: Arial; text-align: center; }
         #timer { font-size: 3em; margin: 20px; }
     </style>
 </head>
 <body>
-    <h1>在线计时器</h1>
-    <div id="timer">00:00:00</div>
-    <button onclick="startTimer()">开始</button>
-    <button onclick="stopTimer()">停止</button>
-    <button onclick="resetTimer()">重置</button>
+<div style="text-align: center; width: 100%;">
+    <h2
+        style="margin: 0 0 8px; font-family: 'Poppins-Klaviyo-Hosted', sans-serif; font-size: 20px; font-weight: 400; color: #333; text-align: center;">
+        Coupon Code Validity Period</h2>
+    <div id="countdown-timer"
+        style="display: flex; justify-content: center; align-items: center; gap: 4px; font-family: Arial, sans-serif; font-size: 40px; font-weight: bold; color: #23BCF8;">
+        <span id="days">00</span>:
+        <span id="hours">00</span>:
+        <span id="minutes">00</span>:
+        <span id="seconds">00</span>
+    </div>
+</div>
 
-    <script>
-        let seconds = 0;
-        let timer;
-        
-        function startTimer() {
-            timer = setInterval(() => {
-                seconds++;
-                updateDisplay();
-            }, 1000);
+<style>
+    /* 移动端适配：屏幕宽度小于480px时，标题字体大小调整为16px */
+    @media (max-width: 480px) {
+        h2 {
+            font-size: 16px !important;
         }
-        
-        function stopTimer() {
-            clearInterval(timer);
+
+        #countdown-timer {
+            font-size: 30px !important;
         }
-        
-        function resetTimer() {
-            stopTimer();
-            seconds = 0;
-            updateDisplay();
+    }
+</style>
+
+<script>
+    // 倒计时截止时间：2025年6月21日 23:59:59
+    const endDate = new Date(2025, 5, 21, 23, 59, 59);
+
+    // 页面加载完成后执行倒计时初始化
+    document.addEventListener('DOMContentLoaded', function () {
+        updateCountdown();
+        const timer = setInterval(updateCountdown, 1000);
+    });
+
+    function updateCountdown() {
+        const now = new Date();
+        const timeDiff = endDate - now;
+
+        if (timeDiff <= 0) {
+            document.getElementById('countdown-timer').innerHTML = '<div style="font-size: 16px; color: #999;">Expired</div>';
+            return;
         }
-        
-        function updateDisplay() {
-            const hours = Math.floor(seconds / 3600);
-            const minutes = Math.floor((seconds % 3600) / 60);
-            const secs = seconds % 60;
-            
-            document.getElementById('timer').innerHTML = 
-                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
-    </script>
+
+        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+        document.getElementById('days').innerText = days.toString().padStart(2, '0');
+        document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+        document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+        document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+    }
+</script>
 </body>
 </html>
